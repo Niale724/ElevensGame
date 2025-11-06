@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 public class ElevensGame
 {
     private Deck deck;
+    public int RemainingDeckCount => deck.RemainingCount;
     private Card?[] table;
 
     public ElevensGame()
@@ -30,8 +31,14 @@ public class ElevensGame
         {
             if (table[i] != null)
             {
-                Console.Write($"[{i}]{table[i]!.Rank}{table[i]!.Suit} ");
+                Console.Write($"[{i}]{table[i]!.Rank} of {table[i]!.Suit}   ");
             }
+            else
+            {
+                Console.Write($"[{i}] empty   ");
+            }
+
+            if ((i + 1) % 3 == 0) Console.WriteLine();
         }
     }
 
@@ -180,6 +187,8 @@ public class ElevensGame
         deck = new Deck();
         table = new Card?[9];
         StartGame();
+        Console.WriteLine("   Elevens Solitaire   ");
+        Console.WriteLine("=======================");
     }
     public int GetRemainingTableCount()
     {
