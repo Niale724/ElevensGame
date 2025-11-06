@@ -123,10 +123,10 @@ public class ElevensGame
         bool hasKing = cards.Any(card => card!.Rank == Rank.King);
         return hasJack && hasQueen && hasKing;
     }
-    
+
     private void ReplaceCards(int[] i)
     {
-        foreach(int index in i)
+        foreach (int index in i)
         {
             if (deck.RemainingCount > 0)
             {
@@ -141,10 +141,48 @@ public class ElevensGame
             }
         }
     }
-    //+ HasAvailableMoves(): bool checks if there are any valid moves left
-    //+ IsGameOver(): bool checks if the game is over (deck is empty and no moves left)
-    //+ HasUserWon(): bool checks if the user has won the game (deck is empty and no cards on the table)
-    //+ ResetGame(): void resets the game to initial state
-    //+ GetRemainingTableCount() : int (need to implement new RemainingCount:int in deck class)
-    //      returns remaining count of cards
+    
+    public bool HasAvailableMoves()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (table[i] == null) continue;
+            for (int j = i + 1; j < 9; j++)
+            {
+                if (table[j] != null &&
+                    GetCardValue(table[i]) + GetCardValue(table[j]) == 11)
+                    return true;
+            }
+        }
+
+        bool hasJack = false, hasQueen = false, hasKing = false;
+        for (int i = 0; i < 9; i++)
+        {
+            if (table[i] == null) continue;
+            if (table[i]!.Rank == Rank.Jack) hasJack = true;
+            if (table[i]!.Rank == Rank.Queen) hasQueen = true;
+            if (table[i]!.Rank == Rank.King) hasKing = true;
+        }
+        if (hasJack && hasQueen && hasKing) return true;
+        
+        return false;
+    }
+    public bool IsGameOver()
+    {
+        return deck.RemainingCount == 0 && !HasAvailableMoves();
+    }
+    public bool HasUserWon()
+    {
+        return deck.RemainingCount == 0 && GetRemainingTableCount() == 0;
+    }
+    public void ResetGame()
+    {
+        deck = new Deck();
+        table = new Card?[9];
+        StartGame();
+    }
+    public int GetRemainingTableCount()
+    {
+        return table.Count(card => card != null);
+    }
 }
