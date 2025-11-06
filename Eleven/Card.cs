@@ -31,4 +31,6 @@ public class Card
     {
         isFaceUp = !isFaceUp;
     }
+
+    public bool IsFaceUp => isFaceUp;
 }
